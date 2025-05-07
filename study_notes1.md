@@ -90,4 +90,4 @@
 
 ![9_3](img/9_3.png)
 
-或者直接[打开网页](https://assetstore.unity.com/)
+或者直接[打开网页](https://assetstore.unity.com/)，点击搜索按钮进入`/search`网址后，能看到价格筛选，可以选择免费
