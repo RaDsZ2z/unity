@@ -51,3 +51,77 @@ Debug.DrawRay(new Vector3(1, 0, 0), new Vector3(1, 1, 0), Color.red);
 ![22_2](./img/22_2.png)
 
 # 23.物体类的使用
+
+如何使用脚本修改物体的状态（位置形状颜色等等...）
+
+有物体`EmptyObject`和对应脚本`ObjectClassTest.cs`
+
+![23_1](./img/23_1.png)
+
+```C#
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class ObjecClasstTest : MonoBehaviour
+{
+    public GameObject Cube;
+    // Start is called before the first frame update
+    void Start()
+    {
+        GameObject go = this.gameObject; //在这里this可以省略
+        //名字
+        Debug.Log(go.name);
+        //可以直接这样写
+        Debug.Log(gameObject.name);
+        //标签
+        Debug.Log(gameObject.tag);
+        //图层
+        Debug.Log(gameObject.layer);
+        //立方体的名称
+        Debug.Log(Cube.name);
+        //Cube在场景中是否激活
+        Debug.Log(Cube.activeInHierarchy);
+        //Cube物体本身的激活状态
+        Debug.Log(Cube.activeSelf);
+        //获取Fransform组件
+        Transform trans = this.transform; //由于每个物体都有一个transform组件，有很简便的获取transform组件的方法，跟gameObject一样
+        Debug.Log(transform.position);
+        //获取其它组件
+        BoxCollider bc = GetComponent<BoxCollider>();
+
+        //获取当前物体的子物体身上的某个组件
+        //GetComponentInChildren<CapsuleCollider>(bc);
+
+        //获取当前物体的父物体身上的某个组件
+        //GetComponentInChildren<BoxCollider>(bc);
+
+        //添加一个组件
+        gameObject.AddComponent<AudioSource>();
+        //给Cube添加
+        Cube.AddComponent<AudioSource>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+}
+
+```
+
+上方代码输出的标签和图层就是上图右上角的标签和图层
+
+![23_2](./img/23_2.png)
+
+这里是否打勾对应物体是否激活，且在场景中非激活状态的物体的所有子物体也是非激活的。若GameObject的勾取消了 则
+
+```C#
+Debug.Log(Cube.activeInHierarchy);//输出 false Cube在场景中未激活
+Debug.Log(Cube.activeSelf);//输出 true Cube物体本身是激活的
+```
+
+
+
+当前进度 15:00
