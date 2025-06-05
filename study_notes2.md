@@ -66,6 +66,8 @@ using UnityEngine;
 public class ObjecClasstTest : MonoBehaviour
 {
     public GameObject Cube;
+    //获取预设体
+    public GameObject Prefab;
     // Start is called before the first frame update
     void Start()
     {
@@ -100,6 +102,16 @@ public class ObjecClasstTest : MonoBehaviour
         gameObject.AddComponent<AudioSource>();
         //给Cube添加
         Cube.AddComponent<AudioSource>();
+        //通过游戏物体的名称来获取游戏物体
+        GameObject test = GameObject.Find("Test");
+        //通过游戏标签来获取游戏物体
+        test = GameObject.Find("Enemy");
+        //设置激活状态
+        test.SetActive(true);
+        //生成
+        GameObject fab = Instantiate(Prefab);
+        //销毁
+        Destroy(fab)
     }
 
     // Update is called once per frame
@@ -122,6 +134,173 @@ Debug.Log(Cube.activeInHierarchy);//输出 false Cube在场景中未激活
 Debug.Log(Cube.activeSelf);//输出 true Cube物体本身是激活的
 ```
 
+上方代码`public GameObject Cube;`中`Cube`变量对应到子物体的方式是在unity中用鼠标拖拽（把下图中的1拖拽到2）
 
+![23_3](./img/23_3.png)
 
-当前进度 15:00
+还有别的获取游戏物体的方式
+
+```C#
+//通过游戏物体的名称来获取游戏物体
+GameObject test = GameObject.Find("Test");
+//通过游戏标签来获取游戏物体
+test = GameObject.Find("Enemy");
+```
+
+> 这里我有一个问题，Find方法的寻找范围？
+
+脚本实现通过预设体创建游戏物体
+
+```C#
+public GameObject Prefab;//要在unity中把预设体拖到这个变量上
+//生成
+GameObject go = Instantiate(Prefab);
+//销毁
+Destroy(go)
+```
+
+# 24.游戏时间的使用
+
+```C#
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class TimeTest : MonoBehaviour
+{
+    double timer = 0;
+    // Start is called before the first frame update
+    void Start()
+    {
+        //游戏开始到现在所花的时间
+        Debug.Log(Time.time);
+        //时间缩放值（设置时间流速？）
+        Debug.Log(Time.timeScale);
+        //固定时间间隔
+        Debug.Log(Time.fixedDeltaTime);
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        timer += Time.deltaTime;
+        //上一帧到这一帧所用的游戏时间
+        //Debug.Log(Time.deltaTime);
+        if(timer > 3)
+        {
+            Debug.Log("大于3秒了");
+        }
+    }
+}
+```
+
+# 25.Application
+
+C#脚本可能读取一些文件，也可能写入一些文件，从哪里读，写到哪里呢
+
+```C#
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class ApplicationTest : MonoBehaviour
+{
+    // Start is called before the first frame update
+    void Start()
+    {
+        //游戏数据文件夹路径（只读，打包后会被加密压缩）
+        Debug.Log(Application.dataPath);
+        //持久化文件夹路径（可写）
+        Debug.Log(Application.persistentDataPath);
+        //streamingAssets（只读，不会加密压缩，可以存放配置文件和其它不需要加密的文件）
+        Debug.Log(Application.streamingAssetsPath);
+        //缓存路径 存放临时文件
+        Debug.Log(Application.temporaryCachePath);
+        //控制是否在后台运行
+        Debug.Log(Application.runInBackground);
+        //打开url
+        Application.OpenURL("https://www.baidu.com");
+        //退出游戏
+        Application.Quit();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+}
+```
+
+# 26.场景类
+
+游戏包含若干个场景，场景包含若干个游戏物体，游戏物体包含若干个脚本
+
+![26_1](./img/26_1.png)
+
+之前都是在默认的场景中添加游戏物体、脚本组件，接下来试着创建多个场景，加载新的场景  
+
+之前的默认场景是下图中的`SampleScene`它处于右边的`Scenes`文件夹中，这里已经创建了自己的场景`MyScene1`
+
+![26_2](./img/26_2.png)
+
+选中`SampleScene`后点击左上角的 文件 -> 生成设置 把两个场景拖进来
+
+![26_3](./img/26_3.png)
+
+```C#
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+public class SceneTest : MonoBehaviour
+{
+    // Start is called before the first frame update
+    void Start()
+    {
+        //场景类 和 场景管理类
+
+        //使用下标加载场景
+        //SceneManager.LoadScene(1);
+
+        //或者用场景名加载场景
+        //SceneManager.LoadScene("MyScene1");
+
+        //获取当前场景
+        Scene scene = SceneManager.GetActiveScene();
+        //场景名称
+        Debug.Log(scene.name);
+        //场景是否已经加载
+        Debug.Log(scene.isLoaded);
+        //场景路径
+        Debug.Log(scene.path);
+        //场景索引
+        Debug.Log(scene.buildIndex);
+        //所有游戏物体
+        GameObject[] gos = scene.GetRootGameObjects();
+        Debug.Log(gos.Length);
+
+        //场景管理类
+        //创建新场景
+        Scene newScene = SceneManager.CreateScene("newScene");
+        //已加载场景个数
+        Debug.Log(SceneManager.sceneCount);
+        //卸载场景
+        SceneManager.UnloadSceneAsync(newScene);
+
+        //另一种场景加载的方式
+        SceneManager.LoadScene("MyScene1",LoadSceneMode.Single);//加载新的场景，把原本的场景卸载
+        SceneManager.LoadScene("MyScene1",LoadSceneMode.Additive);//新的场景和原本的场景同时存在（叠加在一起）
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+}
+```
+
+# 27.异步加载场景并获取进度
+
