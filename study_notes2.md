@@ -304,3 +304,53 @@ public class SceneTest : MonoBehaviour
 
 # 27.异步加载场景并获取进度
 
+有一些加载数据、加载场景的操作很费时，需要异步执行  
+
+C#可以用多线程实现，unity提供了协程
+
+```C#
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+public class AsyncTest : MonoBehaviour
+{
+    AsyncOperation operation;
+    // Start is called before the first frame update
+    void Start()
+    {
+        StartCoroutine(loadScene());
+    }
+    //协程方法用来异步加载场景
+    IEnumerator loadScene()
+    {
+        operation = SceneManager.LoadSceneAsync(1);
+        //加载完场景不要自动跳转
+        operation.allowSceneActivation = false;
+
+        yield return operation;
+    }
+
+    float timer = 0;
+
+
+    // Update is called once per frame
+    void Update()
+    {
+        //输出加载进度 范围是0到0.9
+        Debug.Log(operation.progress);
+        timer += Time.deltaTime;
+        //到达五秒再跳转
+        if(timer > 5)
+        {
+            operation.allowSceneActivation = true;
+        }
+    }
+}
+```
+
+# 28.了解Transform
+
+`Transform`是unity里每个游戏物体都会有的一个组件，它包含位置、旋转、缩放的信息  
+
+`Transform`也记录了物体之间的`parent-child`关系
