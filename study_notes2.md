@@ -354,3 +354,127 @@ public class AsyncTest : MonoBehaviour
 `Transform`是unity里每个游戏物体都会有的一个组件，它包含位置、旋转、缩放的信息  
 
 `Transform`也记录了物体之间的`parent-child`关系
+
+```C#
+//TransformTest.cs
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class TransformTest : MonoBehaviour
+{
+    // Start is called before the first frame update
+    void Start()
+    {
+        /*
+        //位置
+        Debug.Log(transform.position);//世界位置
+        Debug.Log(transform.localPosition);//相对于父物体的位置
+        //旋转
+        Debug.Log(transform.rotation);//四元数
+        Debug.Log(transform.localRotation);
+        Debug.Log(transform.eulerAngles);//欧拉角
+        Debug.Log(transform.localEulerAngles);
+        //缩放
+        Debug.Log(transform.localScale);//缩放
+        //向量
+        Debug.Log(transform.forward);
+        Debug.Log(transform.right);
+        Debug.Log(transform.up);
+        */
+
+        //父子关系
+        //获取父物体
+        //transform.parent.gameObject
+        //子物体个数
+        //Debug.Log(transform.childCount);
+        //接触与子物体的父子关系
+        //transform.DetachChildren();
+        //获取子物体
+        Transform trans = transform.Find("Child");
+        trans = transform.GetChild(0);
+        //判断一个物体是不是另外一个物体的子物体
+        bool res = trans.IsChildOf(transform);
+        Debug.Log(res);
+        //设置为父物体
+        trans.SetParent(transform);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        //时时刻刻看向(0,0,0)
+        //transform.LookAt(Vector3.zero);
+        //绕自身的Vector3.up轴 旋转 每帧一度
+        //transform.Rotate(Vector3.up, 1);
+        //绕某个物体旋转  绕原点的up轴旋转
+        //transform.RotateAround(Vector3.zero, Vector3.up, 5);
+        //移动 每帧向前移动0.1
+        //transform.Translate(Vector3.forward * 0.1f);
+    }
+}
+
+```
+
+# 29.键盘鼠标
+
+可以添加游戏物体对键鼠输入的监听
+
+```C#
+//KeyTest.cs
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class KeyTest : MonoBehaviour
+{
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        //鼠标点击
+        //按下鼠标 0左键 1右键 2滚轮
+        if (Input.GetMouseButtonDown(0))
+        {
+            Debug.Log("按下了鼠标左键");
+        }
+
+        //持续按下鼠标
+        if (Input.GetMouseButton(0))
+        {
+            Debug.Log("持续按下鼠标左键");
+        }
+
+        //抬起鼠标
+        if (Input.GetMouseButtonUp(0))
+        {
+            Debug.Log("抬起了鼠标左键");
+        }
+
+
+        //按下键盘按键
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            Debug.Log("按下了A");
+        }
+        //持续按下按键
+        if (Input.GetKey(KeyCode.A))
+        {
+            Debug.Log("持续按下A");
+        }
+        //抬起按键
+        if (Input.GetKeyUp(KeyCode.A))
+        {
+            Debug.Log("松开了A");
+        }
+        //此处的枚举   KeyCode.A 等同于 "a" 
+    }
+}
+```
+
+# 30.虚拟轴
