@@ -478,3 +478,11 @@ public class KeyTest : MonoBehaviour
 ```
 
 # 30.虚拟轴
+
+这节课是在讲跨平台兼容的东西。突然觉得自己不应该继续看教程了，教程的东西很杂很广，我应该上手做点东西，而且我现在应该能上手开始做demo了。目前我只需要参考一个最简单的游戏demo是如何运行的，然后就能自己动手开始做了。
+
+参考:  
+
+[对象池](https://www.bilibili.com/video/BV1Lb411e7zh?spm_id_from=333.788.videopod.sections&vd_source=8924ad59b4f62224f165e16aa3d04f00)  
+
+[简单敌人AI](https://www.bilibili.com/video/BV16b411q78k?spm_id_from=333.788.videopod.sections&vd_source=8924ad59b4f62224f165e16aa3d04f00)  
