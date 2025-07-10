@@ -477,6 +477,10 @@ public class KeyTest : MonoBehaviour
 }
 ```
 
+# 30.虚拟轴
+
+虚拟轴是数值在-1到1之间的数轴，最重要的三个数是-1，0，1
+
 # 45.为游戏物体制作简单的动画(Animation)
 
 # 46.为游戏物体制作简单的动画(Animator)
